@@ -8,116 +8,53 @@ info:
 security:
   - BearerAuth: []
 paths:
-  /api/v1/teams:
-    x-router-controller: teamsController
+  /api/v1/jobseekers:
+    x-router-controller: jobseekersController
     get:
-      description: Returns all teams
-      operationId: getTeams
+      description: Returns all jobseekers
+      operationId: getJobseekers
       responses:
         200:
-          description: Team list
+          description: Jobseeker list
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/team'
+                  $ref: '#/components/schemas/jobseeker'
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    post:
-      description: Creates a new team
-      operationId: addTeam
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/team'
-        description: Team to be created
-        required: true
-      responses:
-        201:
-          description: Team
-        default:
-            description: Unexpected error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/error'
                   
-  /api/v1/teams/{id}:
-    x-router-controller: teamsController
+  /api/v1/jobseekers/{type}:
+    x-router-controller: jobseekersController
     get:
-      description: Returns a single team by its id
-      operationId: findByid
+      description: Returns a single jobseeker by its type
+      operationId: findBytype
       parameters:
         - required: true
-          name: id
-          description: id of the team to fetch
+          name: type
+          description: type of the jobseeker to fetch
           in: path
           schema:
-            type: number
+            type: string
       responses:
         200:
-          description: Team found by id
+          description: Jobseeker found by type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/team'
+                $ref: '#/components/schemas/jobseeker'
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    put:
-      description: Update a team based on its id
-      operationId: updateTeam
-      parameters:
-        - required: true
-          name: id
-          description: id of the team to update
-          in: path
-          schema:
-            type: number
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/team'
-        description: Team to be updated
-        required: true
-      responses:
-        '204':
-          description: Team updated
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    delete:
-      description: Deletes a single team based on its id
-      operationId: deleteTeam
-      parameters:
-        - required: true
-          name: id
-          description: id of the team to delete
-          in: path
-          schema:
-            type: number
-      responses:
-        '204':
-          description: Team deleted
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
+    
 
 components:
   securitySchemes:
@@ -126,25 +63,27 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    team:
+    jobseeker:
         type: object
         required:
-          - id
+          - type
         properties:
-          id:
+          year:
             type: number
-          name:
+          gender:
             type: string
-          code:
+          territory:
             type: string
-          country:
+          type:
             type: string
-          founded:
+          primary:
             type: number
-          national:
-            type: boolean
-          logo:
-            type: string
+          fp_program:
+            type: number
+          general_education:
+            type: number
+          total:
+            type: number
     error:
       type: object
       required:
